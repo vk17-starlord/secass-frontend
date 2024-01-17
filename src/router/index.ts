@@ -19,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'generateKey',
     component: () => import('@/pages/auth/keyLoading.vue')
   },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('@/pages/dashboard/index.vue')
+  },
   // Add more routes as needed
 ]
 

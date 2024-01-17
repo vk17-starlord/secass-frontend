@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { useAuthStore } from '@/store/useAuthStore';
 import { onMounted } from 'vue';
 const store = useAuthStore()
@@ -54,7 +55,12 @@ onMounted(async() => {
  
   const res =   await store.initializeKeys()
   if(res){
- 
+
+   setTimeout(() => {
+  
+    router.push('/dashboard')
+
+   }, 3000);
   }
 
 

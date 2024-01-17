@@ -10,13 +10,19 @@ import {
   generateRSAKeyPair,
   generateSymmetricKey,
 } from "@/security/keyDerivation";
+import { useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 import { Ref, ref } from "vue";
 
 export const useAuthStore = defineStore("AuthStore", () => {
-  // rootkey which is hashed by PBKDF2
-
   const rootKey: Ref<string | null> = ref(null);
+
+  const userData = useStorage('user', String, undefined , {
+    serializer: {
+      read: (v: any) => v ? JSON.parse(v) : null,
+      write: (v: any) => JSON.stringify(v),
+    },
+  })
 
   const keyStatus = ref("Generating Keys");
   const signup = async (payload: any): Promise<SignUpResponse> => {
@@ -24,12 +30,16 @@ export const useAuthStore = defineStore("AuthStore", () => {
       payload.email + payload.passHash,
       payload.email
     );
+
     const hashedRootkey = await hashText(rootKey.value, payload.email);
+    console.log("hashed root key", hashedRootkey);
 
-    // Simulate API delay using setTimeout
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(() => {
+      userData.value ={ email: payload.email, name: payload.name };
+      resolve(true); // Call the resolve function to fulfill the Promise
+  }, 500));
+  
 
-    // Simulated API response
     return {
       id: "123",
       name: payload.name,
@@ -55,14 +65,11 @@ export const useAuthStore = defineStore("AuthStore", () => {
         "All set to go !!",
       ];
 
-      // Generate symmetric key
       const symetricKey = await generateSymmetricKey();
 
-      // Decode the base64-encoded rootKey
       const keyBuffer = decodeBase64(rootKey.value) || new Uint8Array(0);
 
       try {
-        // Import the key
         const key = await crypto.subtle.importKey(
           "raw",
           keyBuffer,
@@ -77,22 +84,16 @@ export const useAuthStore = defineStore("AuthStore", () => {
             encodeBase64(symetricKey)
           );
 
-          console.log("encrypted symmetric key",symetricKey)
-          // send encrypted symetric key to server
+          console.log("encrypted symmetric key", symetricKey);
 
-          // generate public private keys
           const RSAkeys = await generateRSAKeyPair();
           const publicKey = await exportPublicKeyAsBase64(RSAkeys.publicKey);
           const privateKey = await exportPublicKeyAsBase64(RSAkeys.publicKey);
 
-          // encrypt private key
           if (privateKey) {
-            const encryptedprivateKey = await encryptAESGCM(
-              key,
-              privateKey
-            );
-            console.log("public key",publicKey)
-            console.log("encrypted private key",encryptedprivateKey)
+            const encryptedprivateKey = await encryptAESGCM(key, privateKey);
+            console.log("public key", publicKey);
+            console.log("encrypted private key", encryptedprivateKey);
           }
         }
 
@@ -104,5 +105,5 @@ export const useAuthStore = defineStore("AuthStore", () => {
     }
   };
 
-  return { signup, keyStatus, initializeKeys };
+  return { signup, keyStatus, initializeKeys , userData };
 });
