@@ -12,7 +12,6 @@ export default {
         primary_light:'#A5A6F6',
         primary_medium:'#7879F1',
         input_bg:'#0E0E14'
-
       },
     },
   },
