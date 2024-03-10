@@ -42,7 +42,7 @@
                     </p>
                 </td>
                 <td class="flex justify-center items-center px-4 py-4 ">
-                    <button class="action-btn">
+                    <button class="action-btn" @click="goToOrganization">
                         <img width="16" height="16" class="mr-2" src="../../../assets/eye.svg" alt="edit" />
                         View Secrets
                     </button>
@@ -52,10 +52,16 @@
     </table>
 </template>
 <script setup lang="ts">
+import router from '@/router';
+
 
   const props = defineProps<{
     data: Array<any>,
   }>();
+
+  const goToOrganization = () => {
+    router.push('/organization');
+  }
 </script>
 <style scoped>
     .table-header-border {
