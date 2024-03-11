@@ -20,6 +20,8 @@ export async function generateSymmetricKey(): Promise<ArrayBuffer> {
   }
 }
 
+// comment check
+
 export async function generateRSAKeyPair(): Promise<CryptoKeyPair> {
   try {
     const keyPair = await crypto.subtle.generateKey(
