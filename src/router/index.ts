@@ -23,11 +23,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/pages/dashboard/index.vue')
-  },
-  {
-    path: '/organization',
-    name: 'organization',
-    component: () => import('@/pages/organization/index.vue')
   }
   // Add more routes as needed
 ]
