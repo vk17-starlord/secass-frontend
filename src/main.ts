@@ -14,6 +14,7 @@ app.use(pinia)
 
 // @ts-ignore
 app.use(plugin, defaultConfig({
+    // @ts-ignore
     iconLoader: (iconName) => {
 
         return fetch(

@@ -4,6 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        
+        cardbg:'rgba(17,17,25)',
         primary: "#5D5FEF",
         dark:"#00000A",
         secondary:'#EF5DA8',

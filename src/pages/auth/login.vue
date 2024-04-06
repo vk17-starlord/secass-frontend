@@ -7,7 +7,6 @@
        <div class="w-full min-h-screen flex justify-center items-center bg_img">
  
        </div>
-    
     </div>
 </template>
 

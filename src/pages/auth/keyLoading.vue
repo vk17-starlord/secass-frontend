@@ -58,13 +58,10 @@ onMounted(async() => {
 
    setTimeout(() => {
   
-    router.push('/dashboard')
+    router.push('/app/dashboard')
 
    }, 3000);
   }
-
-
-    
 })
 
 </script>

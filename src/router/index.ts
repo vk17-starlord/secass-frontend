@@ -1,30 +1,50 @@
 // src/router.ts
 
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
 // Import your components that will be used as views
+import LoginPage from '@/pages/auth/login.vue'
+import SignupPage from '@/pages/auth/signup.vue'
+import KeyLoadingPage from '@/pages/auth/keyLoading.vue'
+import ContainerPage from '@/pages/container/index.vue'
+import DashboardPage from '@/pages/dashboard/index.vue'
+import organizationPage from '@/pages/organization/index.vue'
+
 // Define your routes
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'login',
-    component: () => import('@/pages/auth/login.vue')
+    component: LoginPage
   },
   {
     path: '/signup',
     name: 'signup',
-    component: () => import('@/pages/auth/signup.vue')
+    component: SignupPage
   },
   {
     path: '/generatekey',
     name: 'generateKey',
-    component: () => import('@/pages/auth/keyLoading.vue')
+    component: KeyLoadingPage
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: () => import('@/pages/dashboard/index.vue')
+    path: '/app',
+    name: 'app',
+    component: ContainerPage,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: DashboardPage
+      },
+      {
+        path: 'organization/:id',
+        name: 'organization',
+        component: organizationPage
+      }
+      // Add more sub-routes as needed
+    ]
   }
-  // Add more routes as needed
 ]
 
 // Create the router instance
@@ -32,6 +52,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
 
 export default router
