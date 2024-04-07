@@ -62,7 +62,6 @@ import { ref } from 'vue'
 	lastLogin: string;
   }
   
-  const isOpen = ref(false);
 
   const users = ref<User[]>([
 	{ name: 'John Doe', email: 'john@example.com', role: 'Accepted', status: 'Active', lastLogin: '2022-03-15' },
@@ -70,6 +69,8 @@ import { ref } from 'vue'
 	{ name: 'Alice Smith', email: 'alice@example.com', role: 'Rejected', status: 'Inactive', lastLogin: '2022-03-14' },
 	// Add more users as needed
   ]);
+
+  const isOpen = ref(false);
 
   function closeModal() {
 	isOpen.value = false

@@ -20,7 +20,7 @@
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.email }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.admin }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">
-			<button class="bg-primary px-10 py-2 rounded-md text-white">View </button>
+			<router-link :to="'/app/organization/' + row.id" class="bg-primary px-10 py-2 rounded-md text-white">View</router-link>
 		  </div>
 		</div>
 	  </div>
@@ -31,14 +31,14 @@
   import { ref } from 'vue';
   
   const tableData = ref([
-	{ organization: 'Org 1', email: 'org1@example.com', admin: 'Admin 1' },
-	{ organization: 'Org 2', email: 'org2@example.com', admin: 'Admin 2',  },
-	{ organization: 'Org 3', email: 'org3@example.com', admin: 'Admin 3' },
-	{ organization: 'Org 4', email: 'org4@example.com', admin: 'Admin 4' },
-	{ organization: 'Org 5', email: 'org5@example.com', admin: 'Admin 5' },
-	{ organization: 'Org 6', email: 'org6@example.com', admin: 'Admin 6' },
-	// Add more dummy data as needed
-  ]);
+  { id: 1, organization: 'Org 1', email: 'org1@example.com', admin: 'Admin 1' },
+  { id: 2, organization: 'Org 2', email: 'org2@example.com', admin: 'Admin 2' },
+  { id: 3, organization: 'Org 3', email: 'org3@example.com', admin: 'Admin 3' },
+  { id: 4, organization: 'Org 4', email: 'org4@example.com', admin: 'Admin 4' },
+  { id: 5, organization: 'Org 5', email: 'org5@example.com', admin: 'Admin 5' },
+  { id: 6, organization: 'Org 6', email: 'org6@example.com', admin: 'Admin 6' },
+  // Add more dummy data as needed
+]);
   </script>
   <style scoped>
   /* Add your scoped styles here */

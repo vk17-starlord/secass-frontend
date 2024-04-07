@@ -1,7 +1,8 @@
 <template>
+	<createKey  @close="closeModal" :isOpen="isOpen"/>
 	<div class="w-full flex items-center justify-between">
 		<h2 class="text-xl font-bold my-auto" >Organization Keys</h2>
-		<button class="bg-primary px-20 py-2 h-max rounded-md text-white">Add Key</button>
+		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Add Key</button>
 	</div>
 	<div class="w-full flex justify-between space-x-5 my-10">
 		<input class="w-full bg-dark rounded-md px-5 text-white py-5" placeholder="Search Keys" />
@@ -47,6 +48,7 @@
   </template>
   
   <script setup lang="ts">
+  import createKey from '../modal/createKey.vue';
   import { ref } from 'vue';
   interface KeyInfo {
 	key: string;
@@ -55,6 +57,17 @@
 	lastAccessedBy: string;
 	lastAccessedAt: string; // Add the new property
   }
+
+
+  const isOpen = ref(false);
+
+  function closeModal() {
+	isOpen.value = false
+  }
+  function openModal() {
+	isOpen.value = true
+  }
+
   
   const tableData = ref<KeyInfo[]>([
 	{ key: 'Key 1', createdAt: '2022-01-01', validTill: '2023-01-01', lastAccessedBy: 'User 1', lastAccessedAt: '2023-01-01 12:00:00' },

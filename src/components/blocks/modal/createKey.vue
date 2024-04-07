@@ -33,9 +33,9 @@
 				  as="h3"
 				  class="text-2xl inline-flex justify-center items-center text-center font-semibold leading-6 text-white"
 				>
-				   <i class='bx mr-5 bxs-user-plus'></i> Invite Users
+				   <i class='bx mr-5 bxs-user-plus'></i> Create Key
 				</DialogTitle>
-				
+				<CreateKeyForm/>
 			  </DialogPanel>
 			</TransitionChild>
 		  </div>
@@ -54,6 +54,7 @@
 	DialogPanel,
 	DialogTitle,
   } from '@headlessui/vue'
+import CreateKeyForm from '../../formkit/createKeyForm.vue';
 
 
 // Define props
