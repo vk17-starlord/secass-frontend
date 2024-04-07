@@ -1,8 +1,17 @@
 <template>
+	<div class="w-full flex items-center justify-between">
+		<h2 class="text-xl font-bold my-auto" >Organization Keys</h2>
+		<button class="bg-primary px-20 py-2 h-max rounded-md text-white">Add Key</button>
+	</div>
+	<div class="w-full flex justify-between space-x-5 my-10">
+		<input class="w-full bg-dark rounded-md px-5 text-white py-5" placeholder="Search Keys" />
+		<button class="bg-primary px-20 py-2 rounded-md text-white">Search</button>
+	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
 	  <div class="table-header w-full grid grid-cols-6 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col flex justify-start items-center ">
 		  <h3 class="text-white font-semibold text-lg">Key</h3>
+		 
 		</div>
 		<div class="col flex justify-start items-center">
 		  <h3 class="text-white font-semibold text-lg">Created at</h3>

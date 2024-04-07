@@ -1,4 +1,13 @@
 <template>
+	<inviteUser @close="closeModal" :isOpen="isOpen"/>
+	<div class="w-full flex items-center justify-between">
+		<h2 class="text-xl font-bold " >Organization Users</h2>
+		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Invite User</button>
+	</div>
+	<div class="w-full flex justify-between space-x-5 my-10">
+		<input class="w-full bg-dark rounded-md px-5 text-white py-5" placeholder="Search Users" />
+		<button class="bg-primary px-20 py-2 rounded-md text-white">Search</button>
+	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
 	  <div class="table-header w-full grid grid-cols-7 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col flex justify-start items-center ">
@@ -42,8 +51,9 @@
   </template>
   
   <script setup lang="ts">
-  import { ref } from 'vue';
-  
+//@ts-ignore
+import inviteUser from '@/components/blocks/modal/inviteUser.vue';
+import { ref } from 'vue'
   interface User {
 	name: string;
 	email: string;
@@ -52,12 +62,22 @@
 	lastLogin: string;
   }
   
+  const isOpen = ref(false);
+
   const users = ref<User[]>([
 	{ name: 'John Doe', email: 'john@example.com', role: 'Accepted', status: 'Active', lastLogin: '2022-03-15' },
 	{ name: 'Jane Doe', email: 'jane@example.com', role: 'Pending', status: 'Active', lastLogin: '2022-03-16' },
 	{ name: 'Alice Smith', email: 'alice@example.com', role: 'Rejected', status: 'Inactive', lastLogin: '2022-03-14' },
 	// Add more users as needed
   ]);
+
+  function closeModal() {
+	isOpen.value = false
+  }
+  function openModal() {
+	isOpen.value = true
+  }
+
   </script>
   
   <style scoped>

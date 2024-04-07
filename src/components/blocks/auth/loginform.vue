@@ -88,8 +88,7 @@ import { useRouter } from 'vue-router';
   const submitButton = createInput(customSubmit, {
     props: ['text', 'loading']
   })
-  
-  
+
   const loading: Ref<boolean> = ref(false)
   const eyeIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
     <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />

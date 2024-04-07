@@ -7,9 +7,9 @@
 		<div class="w-full mt-10">
 			<TabGroup>
 				<TabList >
-				  <Tab class="px-24  rounded-tl-lg rounded-tr-lg py-4 text-gray-500"> <i class='bx bx-key' ></i> Keys</Tab>
-				  <Tab class="px-24  rounded-tl-lg rounded-tr-lg py-4 text-gray-500"><i class='bx bxs-user' ></i> Users</Tab>
-				  <Tab class="px-24  rounded-tl-lg rounded-tr-lg py-4 text-gray-500"><i class='bx bxs-cog' ></i> Settings</Tab>
+				  <Tab class="px-24  focus:outline-none !important rounded-tl-lg rounded-tr-lg py-4 text-gray-500"> <i class=' mr-2 bx bx-key' ></i> Keys</Tab>
+				  <Tab class="px-24  focus:outline-none !important rounded-tl-lg rounded-tr-lg py-4 text-gray-500"><i class=' mr-2 bx bxs-user' ></i> Users</Tab>
+				  <Tab class="px-24  focus:outline-none !important rounded-tl-lg rounded-tr-lg py-4 text-gray-500"><i class=' mr-2 bx bxs-cog' ></i> Settings</Tab>
 				</TabList>
 				<TabPanels class="w-full">
 				  <TabPanel class="w-full bg-cardbg p-4">
