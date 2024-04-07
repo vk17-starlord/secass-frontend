@@ -25,7 +25,22 @@
 			<p class="text-md text-gray-200 mb-2">Name <span class="text-primary">*</span></p>
 		  </template>
 		</FormKit>
-  
+
+		<FormKit
+		type="text"
+		name="value"
+		outer-class="w-full"
+		input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
+		label-class=""
+		inner-class="$reset mt-2 rounded-md overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
+		validation="required"
+		message-class="text-red-500 text-sm mt-2"
+	  >
+		<template #label>
+		  <p class="text-md text-gray-200 mb-2">Value <span class="text-primary">*</span></p>
+		</template>
+	  </FormKit>
+
 		<FormKit
 		  type="text"
 		  name="description"

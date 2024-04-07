@@ -5,7 +5,7 @@
 		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Add Key</button>
 	</div>
 	<div class="w-full flex justify-between space-x-5 my-10">
-		<input class="w-full bg-dark rounded-md px-5 text-white py-5" placeholder="Search Keys" />
+		<input class="w-full bg-dark rounded-md px-5 text-white py-3" placeholder="Search Keys" />
 		<button class="bg-primary px-20 py-2 rounded-md text-white">Search</button>
 	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">

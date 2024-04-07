@@ -18,7 +18,9 @@
 				  <TabPanel class="w-full bg-cardbg p-4">
 					<UsersTable/>
 				  </TabPanel>
-				  <TabPanel class="w-full bg-cardbg p-4">Content 3</TabPanel>
+				  <TabPanel class="w-full bg-cardbg p-4">
+					<organizationSettingForm/>
+				  </TabPanel>
 				</TabPanels>
 			  </TabGroup>
 		
@@ -30,6 +32,8 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import KeysTable from '@/components/blocks/table/KeysTable.vue';
 import UsersTable from '@/components/blocks/table/UserTable.vue';
+import organizationSettingForm from '@/components/formkit/organizationSettingForm.vue'
+// import organizationSettingForm from '../../components/formkit/organizationSettingForm';
 </script>
 
 <style scoped>

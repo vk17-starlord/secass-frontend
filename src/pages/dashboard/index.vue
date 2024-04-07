@@ -43,6 +43,7 @@
 	{ name: 'Key 3', organization: 'Org 3', createdAt: '2022-03-01' },
 	{ name: 'Key 4', organization: 'Org 3', createdAt: '2022-03-01' },
 	{ name: 'Key 5', organization: 'Org 3', createdAt: '2022-03-01' },
+	{ name: 'Key 6', organization: 'Org 3', createdAt: '2022-03-01' },
 	];
   const infoCardsData: Ref<any> = ref([
 	{
