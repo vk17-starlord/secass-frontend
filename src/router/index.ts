@@ -9,6 +9,7 @@ import KeyLoadingPage from '@/pages/auth/keyLoading.vue'
 import ContainerPage from '@/pages/container/index.vue'
 import DashboardPage from '@/pages/dashboard/index.vue'
 import organizationPage from '@/pages/organization/index.vue'
+import KeyPage from '@/pages/keys/index.vue'
 
 // Define your routes
 const routes: Array<RouteRecordRaw> = [
@@ -41,8 +42,12 @@ const routes: Array<RouteRecordRaw> = [
         path: 'organization/:id',
         name: 'organization',
         component: organizationPage
+      },
+      {
+        path: 'organization/:id/keys/:keyId',
+        name: 'key',
+        component: KeyPage
       }
-      // Add more sub-routes as needed
     ]
   }
 ]

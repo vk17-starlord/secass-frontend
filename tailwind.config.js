@@ -13,7 +13,9 @@ export default {
         secondary_light:'#FCDDEC',
         primary_light:'#A5A6F6',
         primary_medium:'#7879F1',
-        input_bg:'#0E0E14'
+        input_bg:'#0E0E14',
+        input_light: '#222222',
+        danger: '#921616'
       },
     },
   },
