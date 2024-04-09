@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
+    <div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10 max-h-[70vh] overflow-scroll">
       <div class="flex justify-between items-center pt-4">
         <h2 class="text-white font-semibold text-2xl">Users</h2>
         <button class="bg-primary px-12 py-1 rounded-md text-white">Add User</button>
