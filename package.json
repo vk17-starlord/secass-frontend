@@ -12,6 +12,7 @@
     "@formkit/vue": "^1.4.0",
     "@headlessui/vue": "^1.7.17",
     "@vueuse/core": "^10.7.2",
+    "axios": "^1.6.8",
     "heroicons": "^2.1.1",
     "path": "^0.12.7",
     "pinia": "^2.1.7",

@@ -38,7 +38,7 @@
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.lastAccessedBy }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.lastAccessedAt }}</div> <!-- New column -->
 		  <div class="col flex px-0 justify-start items-center  py-3">
-			<button class="bg-primary w-full px-10 py-2 rounded-md text-white">View</button>
+			<RouterLink :to="currentRoute+'/keys/'+row.id" class="bg-primary w-full px-10 py-2 rounded-md text-center text-white">View</RouterLink>
 		  </div>
 		</div>
 	  </div>
@@ -48,9 +48,11 @@
   </template>
   
   <script setup lang="ts">
-  import createKey from '../modal/createKey.vue';
+  import { useRoute } from 'vue-router';
+import createKey from '../modal/createKey.vue';
   import { ref } from 'vue';
   interface KeyInfo {
+	id:number;
 	key: string;
 	createdAt: string;
 	validTill: string;
@@ -58,6 +60,8 @@
 	lastAccessedAt: string; // Add the new property
   }
 
+  const currentRoute = useRoute().path;
+  console.log(currentRoute);
 
   const isOpen = ref(false);
 
@@ -70,13 +74,13 @@
 
   
   const tableData = ref<KeyInfo[]>([
-	{ key: 'Key 1', createdAt: '2022-01-01', validTill: '2023-01-01', lastAccessedBy: 'User 1', lastAccessedAt: '2023-01-01 12:00:00' },
-	{ key: 'Key 2', createdAt: '2022-02-01', validTill: '2023-02-01', lastAccessedBy: 'User 2', lastAccessedAt: '2023-02-01 12:00:00' },
-	{ key: 'Key 3', createdAt: '2022-03-01', validTill: '2023-03-01', lastAccessedBy: 'User 3', lastAccessedAt: '2023-03-01 12:00:00' },
-	{ key: 'Key 4', createdAt: '2022-04-01', validTill: '2023-04-01', lastAccessedBy: 'User 4', lastAccessedAt: '2023-04-01 12:00:00' },
-	{ key: 'Key 5', createdAt: '2022-05-01', validTill: '2023-05-01', lastAccessedBy: 'User 5', lastAccessedAt: '2023-05-01 12:00:00' },
-	// Add more dummy data as needed
-  ]);
+    { id: 1, key: 'Key 1', createdAt: '2022-01-01', validTill: '2023-01-01', lastAccessedBy: 'User 1', lastAccessedAt: '2023-01-01 12:00:00' },
+    { id: 2, key: 'Key 2', createdAt: '2022-02-01', validTill: '2023-02-01', lastAccessedBy: 'User 2', lastAccessedAt: '2023-02-01 12:00:00' },
+    { id: 3, key: 'Key 3', createdAt: '2022-03-01', validTill: '2023-03-01', lastAccessedBy: 'User 3', lastAccessedAt: '2023-03-01 12:00:00' },
+    { id: 4, key: 'Key 4', createdAt: '2022-04-01', validTill: '2023-04-01', lastAccessedBy: 'User 4', lastAccessedAt: '2023-04-01 12:00:00' },
+    { id: 5, key: 'Key 5', createdAt: '2022-05-01', validTill: '2023-05-01', lastAccessedBy: 'User 5', lastAccessedAt: '2023-05-01 12:00:00' }
+]
+);
   </script>
   
   <style scoped>

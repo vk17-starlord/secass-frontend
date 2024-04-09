@@ -1,8 +1,10 @@
-import { SignUpResponse } from "@/interfaces/auth";
+import { SignUpRequest, SignUpResponse } from "@/interfaces/auth";
 import {
   decodeBase64,
   encodeBase64,
+  exportPrivateKeyAsBase64,
   exportPublicKeyAsBase64,
+  stringToBase64,
 } from "@/security/conversions";
 import { encryptAESGCM } from "@/security/encryption";
 import { hashText } from "@/security/hashing";
@@ -10,48 +12,47 @@ import {
   generateRSAKeyPair,
   generateSymmetricKey,
 } from "@/security/keyDerivation";
+import AuthServiceWrapper from "@/services/AuthServiceWrapper";
 import { useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
-import { Ref, ref } from "vue";
+import { encode } from "punycode";
+import { Ref, computed, ref } from "vue";
 
 export const useAuthStore = defineStore("AuthStore", () => {
   const rootKey: Ref<string | null> = ref(null);
-
-  const userData = useStorage('user', String, undefined , {
-    serializer: {
-      read: (v: any) => v ? JSON.parse(v) : null,
-      write: (v: any) => JSON.stringify(v),
-    },
-  })
+  const encodedRootKey:Ref<any> = ref(null);
+  const currentPayload:Ref<any> = ref(null);
+  
+  const userData:Ref<any | null>= ref(null);
 
   const keyStatus = ref("Generating Keys");
-  const signup = async (payload: any): Promise<SignUpResponse> => {
+
+  const getUserData = computed(()=>{
+    return userData;
+  })
+
+
+
+  const signup = async (payload:any): Promise<any> => {
     rootKey.value = await hashText(
       payload.email + payload.passHash,
       payload.email
     );
 
     const hashedRootkey = await hashText(rootKey.value, payload.email);
-    console.log("hashed root key", hashedRootkey);
-
-    await new Promise((resolve) => setTimeout(() => {
-      userData.value ={ email: payload.email, name: payload.name };
-      resolve(true); // Call the resolve function to fulfill the Promise
-  }, 500));
-  
-
-    return {
-      id: "123",
-      name: payload.name,
-      email: payload.email,
-      passHash: {
-        alg: "pbkdf2",
-        hash: "hashedPassword",
-      },
-      createdAt: "2022-01-01T12:00:00Z",
-      updatedAt: "2022-01-02T14:30:00Z",
-      isBlackListed: false,
-    };
+    currentPayload.value = {
+      name:payload.name,
+      email:payload.email,
+      passHash:{
+        alg:'PBKDF2',
+        hash:payload.passHash
+      }
+    }
+    rootKey.value = hashedRootkey;
+    encodedRootKey.value = stringToBase64(rootKey.value);
+    console.log(rootKey , 'rootkey')
+    console.log(currentPayload.value,'payload');
+    return true;
   };
 
   const initializeKeys = async () => {
@@ -65,6 +66,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
         "All set to go !!",
       ];
 
+  
       const symetricKey = await generateSymmetricKey();
 
       const keyBuffer = decodeBase64(rootKey.value) || new Uint8Array(0);
@@ -79,25 +81,47 @@ export const useAuthStore = defineStore("AuthStore", () => {
         );
 
         if (symetricKey) {
+
           const encryptedSymetricKey = await encryptAESGCM(
             key,
             encodeBase64(symetricKey)
           );
 
-          console.log("encrypted symmetric key", symetricKey);
+          const base64SymetricKey = await encodeBase64(encryptedSymetricKey.ciphertext);
+          
 
           const RSAkeys = await generateRSAKeyPair();
           const publicKey = await exportPublicKeyAsBase64(RSAkeys.publicKey);
-          const privateKey = await exportPublicKeyAsBase64(RSAkeys.publicKey);
+          const privateKey = await exportPrivateKeyAsBase64(RSAkeys.privateKey);
 
           if (privateKey) {
             const encryptedprivateKey = await encryptAESGCM(key, privateKey);
-            console.log("public key", publicKey);
-            console.log("encrypted private key", encryptedprivateKey);
-          }
-        }
+            const encodedPrivateKey = await encodeBase64(encryptedprivateKey.ciphertext);
 
-        return true;
+            const payload = {
+              "symKey": {
+                  "encryptedData": base64SymetricKey,
+                  "alg": "AESGCM"
+              },
+              "asymmKey": {
+                  "public": publicKey,
+                  "encryptedPvtKey": encodedPrivateKey,
+                  "alg": "RSA"
+              },
+              ...currentPayload.value
+            }
+          
+           const authService = new AuthServiceWrapper();
+           const response = await authService.createUser(payload);
+           console.log(response)
+           if(await response){
+            return true;
+           }else{
+            return false;
+           }
+          }
+
+        }
       } catch (error) {
         console.error("Error importing key:", error);
         throw error;
@@ -105,5 +129,34 @@ export const useAuthStore = defineStore("AuthStore", () => {
     }
   };
 
-  return { signup, keyStatus, initializeKeys , userData };
+  const signIn = async(payload:any)=>{
+    const res = await signup(payload);
+    if(res){
+      const authService = new AuthServiceWrapper();
+      const response = await authService.getUserDetails(payload.email);
+      console.log(response);
+      if(response){
+        if(response.passHash.hash == currentPayload.value.passHash.hash ){
+          userData.value = response;
+          return true;
+        }else{
+          alert('Wrong Email Or Password');
+        }
+
+      }else{
+        alert('Wrong Email Or Password');
+        return false;
+      }
+    }
+
+  }
+
+  const resetAll = ()=>{
+    rootKey.value = null
+    currentPayload.value = null
+    userData.value = null;
+    keyStatus.value = 'Generating Keys';
+  }
+
+  return { signup, signIn ,resetAll , rootKey, encodedRootKey,getUserData, keyStatus, initializeKeys , userData };
 });

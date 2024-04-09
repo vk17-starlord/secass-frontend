@@ -6,17 +6,17 @@ import { createInput } from '@formkit/vue';
 const submitButton = createInput(customSubmit, {
     props: ['text', 'loading']
 })
+const props = defineProps({
+  organization: {
+    type: String,
+    default: null,
+  },
+});
 
 const loading: Ref<boolean> = ref(false)
 
-const formData = ref({
-  fromUserEmail: '',
-  toUserEmail: '',
-  organization: '',
-});
-
-const handleSubmit = () => {
-  console.log('Form submitted:', formData.value);
+const handleSubmit = (val:any) => {
+  console.log('Form submitted:',val);
   // Handle form submission here, potentially using data.value
 };
 </script>
@@ -37,7 +37,7 @@ const handleSubmit = () => {
 
   <FormKit
   type="email"
-  name="email"
+  name="toUserEmail"
   outer-class="w-full"
   input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
   label-class=""
@@ -51,6 +51,26 @@ const handleSubmit = () => {
   </template>
 </FormKit>
 
+<FormKit
+  v-if="!props.organization"
+  type="select"
+  outer-class="w-full"
+  input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
+  label-class=""
+  inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
+  label="Which country is the smallest?"
+  name="small_country"
+  :options="[
+    'Monaco',
+    'Vatican City',
+    'Maldives',
+    'Tuvalu',
+  ]"
+>
+<template #label>
+  <p class="text-md text-gray-200 mb-2">Organization <span class="text-primary">*</span></p>
+</template>
+</FormKit>
 <div class="w-full flex text-white justify-center items-center">
   <FormKit
     :loading="loading"

@@ -54,16 +54,11 @@
 //@ts-ignore
 import inviteUser from '@/components/blocks/modal/inviteUser.vue';
 import { ref } from 'vue'
-  interface User {
-	name: string;
-	email: string;
-	role: string;
-	status: string;
-	lastLogin: string;
-  }
+
   
 
-  const users = ref<User[]>([
+
+  const users = ref([
 	{ name: 'John Doe', email: 'john@example.com', role: 'Accepted', status: 'Active', key: 'Activated' },
 	{ name: 'Jane Doe', email: 'jane@example.com', role: 'Pending', status: 'Active', key:  'Deactivated' },
 	{ name: 'Alice Smith', email: 'alice@example.com', role: 'Rejected', status: 'Inactive', key: 'Generate' },

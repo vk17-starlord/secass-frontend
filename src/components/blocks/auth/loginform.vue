@@ -80,6 +80,7 @@
   
   <script setup lang="ts">
   import customSubmit from '@/components/formkit/customSubmit.vue';
+import { useAuthStore } from '@/store/useAuthStore';
 
   
   import { createInput } from '@formkit/vue';
@@ -108,12 +109,20 @@ import { useRouter } from 'vue-router';
   }
 
   const data = ref(null)
-  
+  const store = useAuthStore();
   const router = useRouter()
   
-  const submitHandler = async () => {
-    loading.value = true
-    
+  const submitHandler = async (val:any) => {
+    loading.value = true;
+    const payload = {
+      name:'',
+      passHash:val.password,
+      email:val.email,
+    }
+    const res = await store.signIn(payload);
+    if(res){
+      router.push('/app/dashboard');
+    }
   }
   </script>
   

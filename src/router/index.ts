@@ -10,6 +10,7 @@ import ContainerPage from '@/pages/container/index.vue'
 import DashboardPage from '@/pages/dashboard/index.vue'
 import organizationPage from '@/pages/organization/index.vue'
 import KeyPage from '@/pages/keys/index.vue'
+import { useAuthStore } from '@/store/useAuthStore'
 
 // Define your routes
 const routes: Array<RouteRecordRaw> = [
@@ -57,5 +58,21 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+// Define the navigation guard
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+
+  // Check if userData is null and the route is not the login page
+  if (!authStore.getUserData.value && to.name !== 'login') {
+    // Redirect to the login page
+    authStore.resetAll();
+    next({ name: 'login' });
+  } else {
+    // Allow navigation to the requested route
+    next();
+  }
+
+});
 
 export default router
