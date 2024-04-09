@@ -9,7 +9,8 @@
                 class="w-[36px] max-h-[36px] rounded-full bg-[#0E0E14] flex justify-center items-center cursor-pointer"
                 @click="handleEditIconClick"
             >
-                <i class='bx bxs-pencil'></i>
+                <i v-if="!isEditing" class='bx bxs-pencil'></i>
+                <i v-else class='bx bxs-save'></i>
             </div>
         </div>
         <div class="w-[68%] flex flex-col items-start justify-between pl-2 pt-3">

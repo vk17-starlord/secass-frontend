@@ -1,8 +1,9 @@
 <template>
+	<addUser @close="closeAddUserModal" :isOpen="isAddUserOpen"/>
     <div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10 max-h-[70vh] overflow-scroll">
       <div class="flex justify-between items-center pt-4">
         <h2 class="text-white font-semibold text-2xl">Users</h2>
-        <button class="bg-primary px-12 py-1 rounded-md text-white">Add User</button>
+        <button @click="openAddUserModal" class="bg-primary px-12 py-1 rounded-md text-white">Add User</button>
       </div>
 	  <div class="table-header w-full grid grid-cols-4 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col justify-start items-center ">
@@ -33,6 +34,7 @@
 
 <script setup lang="ts">
     import { ref } from 'vue';
+	import addUser from '../modal/addUser.vue';
     const tableData = ref([
         { name:"Github PAT", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
         { name:"Digital Ocean", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
@@ -47,6 +49,16 @@
         { name:"AWS Access Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
         { name:"GCP Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" }
     ])
+
+	const isAddUserOpen = ref(false);
+
+	function closeAddUserModal() {
+		isAddUserOpen.value = false
+	}
+	function openAddUserModal() {
+		isAddUserOpen.value = true
+	}
+
 </script>
 
 <style scoped>

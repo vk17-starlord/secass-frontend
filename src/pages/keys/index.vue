@@ -21,7 +21,7 @@
 import KeyDesc from '@/components/blocks/cards/keyDesc.vue';
 import KeyLifetime from '@/components/blocks/cards/keyLifetime.vue';
 import KeyValue from '@/components/blocks/cards/keyValue.vue';
-import KeyUserTable from '@/components/blocks/table/keyUserTable.vue';
+import KeyUserTable from '@/components/blocks/table/KeyUserTable.vue';
 
 
 </script>
