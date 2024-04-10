@@ -12,4 +12,14 @@ export class OrganizationService {
       throw error;
     }
   }
+  
+  static async fetchUserOrganizations(userId: string): Promise<any> {
+    try {
+      const response = await axios.get(`http://localhost:3002/api/v1/organizations/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching user organizations:', error);
+      throw error;
+    }
+  }
 }

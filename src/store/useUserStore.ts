@@ -1,17 +1,50 @@
 import { defineStore } from 'pinia';
 import { Ref, computed,ref } from 'vue';
 import { useAuthStore } from './useAuthStore';
-import { OrganizationService } from '@/services/OrgServiceWrapper';
 import { decodeBase64, encodeBase64, exportPrivateKeyAsBase64, exportPublicKeyAsBase64 } from '@/security/conversions';
+import { InviteService } from '@/services/InviteServiceWrapper';
+import { useOrganizationStore } from './useOrganizationStore';
 export const useUserStore = defineStore('UserStore', () => {
-  // Use ref for organizations array to maintain reactivity
-  const organizations:Ref<any> = ref([]);
+  // Use ref for Invites array to maintain reactivity
+  const Invites:Ref<any> = ref([]);
 
   const authStore = useAuthStore();
-  // Methods to manage organizations
-
+  const orgStore = useOrganizationStore();
+  // Methods to manage Invites
+  const getInvites = async()=>{
+    const currentUserEmail = authStore.getUserData.value.email;
+    const res = await  InviteService.fetchInvites(currentUserEmail);
+    Invites.value=res.data;
+    console.log(Invites.value)
+  }
   const createInvite = async( payload: any) => {
-
+	try {
+		const res = InviteService.createInvite(payload);
+	} catch (error) {
+    alert('error occurred')
+    return;
+	}
   };
-  return { createInvite }
+
+  const acceptInvite = async(id: any)=>{
+    const res =await InviteService.acceptInvite(id);
+    if(res){
+      alert('Accepted Invitation Successfully');
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  const deleteInvite = async(id: any)=>{
+    const res =await InviteService.deleteInvite(id);
+    if(res){
+      alert('Deleted Invitation Successfully');
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  return { createInvite , getInvites , acceptInvite , deleteInvite, Invites }
 });

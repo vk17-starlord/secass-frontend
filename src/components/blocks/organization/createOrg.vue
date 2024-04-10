@@ -72,10 +72,17 @@ import { useOrganizationStore } from '@/store/useOrganizationStore';
   const loading: Ref<boolean> = ref(false);
   const orgStore = useOrganizationStore();
   
-  const handleSubmit = ( val: any ) => {
+  const emits = defineEmits(['close']);
+
+	// Function to close the modal
+	function closeModal() {
+	emits('close');
+	}
+
+  const handleSubmit = async ( val: any ) => {
 	console.log('Form submitted:', val);
-	orgStore.createOrganization(val);
-	// Handle form submission here, potentially using formData.value
+	await orgStore.createOrganization(val);
+	closeModal();
   };
   </script>
   

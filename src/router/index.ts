@@ -9,6 +9,7 @@ import KeyLoadingPage from '@/pages/auth/keyLoading.vue'
 import ContainerPage from '@/pages/container/index.vue'
 import DashboardPage from '@/pages/dashboard/index.vue'
 import organizationPage from '@/pages/organization/index.vue'
+import InvitationPage from '@/pages/invitation/index.vue'
 import KeyPage from '@/pages/keys/index.vue'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -40,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         component: DashboardPage
       },
       {
+        path: 'invitations',
+        name: 'invitations',
+        component: InvitationPage
+      },
+      {
         path: 'organization/:id',
         name: 'organization',
         component: organizationPage
@@ -59,20 +65,17 @@ const router = createRouter({
   routes
 })
 
-// // Define the navigation guard
-// router.beforeEach((to, from, next) => {
-//   const authStore = useAuthStore();
 
-//   // Check if userData is null and the route is not the login page
-//   if (!authStore.getUserData.value && to.name !== 'login' && to.name !== 'signup') {
-//     // Redirect to the login page
-//     authStore.resetAll();
-//     next({ name: 'login' });
-//   } else {
-//     // Allow navigation to the requested route
-//     next();
-//   }
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
 
-// });
-
+  // Check if userData is null and the route is not the login or signup page
+  if (!authStore.getUserData && to.name !== '/' && to.name !== 'signup') {
+    // Redirect to the login page
+    next({ name: 'signin' });
+  } else {
+    // Allow navigation to the requested route
+    next();
+  }
+});
 export default router

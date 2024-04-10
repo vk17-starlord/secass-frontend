@@ -9,7 +9,7 @@
 	  <div class="col flex flex-col justify-start items-start h-full ">
 		<h2 class="text-white font-bold text-xl">{{ data.title }}</h2>
 		<p class="text-white my-4 opacity-50">{{ data.desc }}</p>
-		<a v-if="data.link" class="bg-white px-10 py-2 rounded-md text-primary" :href="data.link" >{{ data.btn }}</a>
+		<RouterLink  v-if="data.link" class="bg-white px-10 py-2 rounded-md text-primary" :to="data.link" >{{ data.btn }}</RouterLink>
 		<button v-else @click="onbtnclick" class="bg-white px-10 py-2 rounded-md text-primary">{{data.btn}}</button>
 	  </div>
 	</div>
@@ -17,6 +17,7 @@
   
   <script setup lang="ts">
   import { defineProps } from 'vue'
+import { RouterLink } from 'vue-router';
   const emits = defineEmits(['button-click']);
   const onbtnclick = ()=>{
 	emits('button-click')

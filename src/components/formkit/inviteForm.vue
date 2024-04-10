@@ -5,6 +5,8 @@ import { createInput } from '@formkit/vue';
 import axios from 'axios';
 //@ts-ignore
 import { InviteService } from '@/services/InviteServiceWrapper';
+import { useOrganizationStore } from '@/store/useOrganizationStore';
+import { useAuthStore } from '@/store/useAuthStore';
 const props = defineProps({
   organization: {
     type: String,
@@ -18,17 +20,52 @@ const submitButton = createInput(customSubmit, {
 
 const loading: Ref<boolean> = ref(false)
 
+  const store = useOrganizationStore();
+  const authStore = useAuthStore();
 
+function convertDateString(dateString: string): string {
+  // Parse the input date string
+  const dateParts = dateString.split('-');
+  const year = parseInt(dateParts[0]);
+  const month = parseInt(dateParts[1]) - 1; // Month is zero-based in JavaScript Date object
+  const day = parseInt(dateParts[2]);
+
+  // Create a new Date object with the parsed date components
+  const date = new Date(year, month, day);
+
+  // Set the desired time components
+  date.setHours(9); // Set hours to 09:00
+  date.setMinutes(0); // Set minutes to 00
+  date.setSeconds(0); // Set seconds to 00
+  date.setMilliseconds(0); // Set milliseconds to 00
+
+  // Convert the date to ISO 8601 format (with UTC timezone)
+  const isoString = date.toISOString();
+
+  return isoString;
+}
 
 const handleSubmit = async(val:any) => {
-  const payload = {
-    toUserEmail:val.toUserEmail,
-    expiresAt:val.expiryDate,
-    organizationId:val.organizationId || props.organization
-  }
+  console.log(store.currentOrganization);
 
-  const inviteService = InviteService.createInvite(payload);
-  console.log(inviteService);
+
+  const invitePayload = {
+    "expiresAt": convertDateString(val.expiryDate),
+    "fromUserEmail": authStore.getUserData.value.email,
+    "toUserEmail": val.toUserEmail,
+    "organizationId": store.currentOrganization.id,
+     "symKey": {
+            "encryptedData": store.currentOrganization.symKey.encryptedData,
+            "alg": "AES-GCM"
+      }
+  }
+  const inviteService =await InviteService.createInvite(invitePayload);
+
+  if(inviteService){
+    
+  }
+ 
+  
   // Handle form submission here, potentially using data.value
 };
 </script>

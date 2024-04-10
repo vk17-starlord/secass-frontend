@@ -35,7 +35,7 @@
 				>
 				   <i class='bx mr-5 bxs-user-plus'></i> Create Key
 				</DialogTitle>
-				<CreateKeyForm/>
+				<CreateKeyForm @close="closeModal"/>
 			  </DialogPanel>
 			</TransitionChild>
 		  </div>

@@ -7,7 +7,7 @@
 		<infoCard v-for="(infoCard, index) in infoCardsData" @button-click="infoCard.onclick" :key="index" :data="infoCard" />
 	  </div>
 
-	  <div class="grid grid-cols-[8fr,4fr] gap-5 py-10">
+	  <div class="grid grid-cols-[9fr,3fr] gap-5 py-10">
 		
 		<div class="col w-full">
 			<h2 class="text-xl text-white font-bold mb-5">Organizations</h2>
@@ -66,11 +66,11 @@
 	},
 	{
 	  icon: "<i class='bx bxs-user-plus'></i>",
-	  title: 'Invite Users',
-	  desc: "Invite users to your organization and distribute keys.",
+	  title: 'My Invites',
+	  desc: "Get List Of Invites",
 	  total: null,
-	  btn: 'Invite',
-	  link: null
+	  btn: 'View Invitation',
+	  link: '/app/invitations/'
 	},
 	{
 	  icon: "<i class='bx bxs-file-blank'></i>",

@@ -23,7 +23,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
   const encodedRootKey:Ref<any> = ref(null);
   const currentPayload:Ref<any> = ref(null);
   
-  const userData:Ref<any | null>= ref(null);
+  const userData:Ref<any | null> = ref(null);
 
   const keyStatus = ref("Generating Keys");
 

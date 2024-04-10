@@ -24,6 +24,31 @@ export function decodeBase64(base64String: string): ArrayBuffer {
       throw error;
     }
   }
+
+  export async function getPublicKeyFromBase64(base64Key: string): Promise<CryptoKey> {
+    try {
+      // Decode the Base64-encoded string to obtain the binary key data
+      const binaryKey = decodeBase64(base64Key);
+  
+      // Import the key
+      const publicKey = await crypto.subtle.importKey(
+        "spki",
+        binaryKey,
+        {
+          name: "RSA-OAEP",
+          hash: { name: "SHA-256" },
+        },
+        true,
+        ["encrypt"]
+      );
+  
+      return publicKey;
+    } catch (error) {
+      console.error("Error importing public key:", error);
+      throw error;
+    }
+  }
+  
   
   export async function exportPrivateKeyAsBase64(privateKey: CryptoKey): Promise<string> {
     try {

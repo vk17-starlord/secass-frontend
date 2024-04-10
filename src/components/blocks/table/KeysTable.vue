@@ -1,6 +1,7 @@
 <template>
 	<createKey  @close="closeModal" :isOpen="isOpen"/>
-	<div class="w-full flex items-center justify-between">
+	
+	<div v-if="orgStore.currentOrgRole == 'admin'"  class="w-full flex items-center justify-between">
 		<h2 class="text-xl font-bold my-auto" >Organization Keys</h2>
 		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Add Key</button>
 	</div>
@@ -9,7 +10,7 @@
 		<button class="bg-primary px-20 py-2 rounded-md text-white">Search</button>
 	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
-	  <div class="table-header w-full grid grid-cols-6 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
+	  <div class="table-header w-full grid grid-cols-5 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col flex justify-start items-center ">
 		  <h3 class="text-white font-semibold text-lg">Key</h3>
 		 
@@ -18,25 +19,22 @@
 		  <h3 class="text-white font-semibold text-lg">Created at</h3>
 		</div>
 		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Valid Till</h3>
+		  <h3 class="text-white font-semibold text-lg">Value</h3>
 		</div>
 		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Last Accessed By</h3>
-		</div>
-		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Last Accessed At</h3>
+		  <h3 class="text-white font-semibold text-lg">Type</h3>
 		</div>
 		<div class="col justify-center flex items-center">
 		  <h3 class="text-white font-semibold text-lg">Action</h3>
 		</div>
 	  </div>
 	  <div class="table-body">
-		<div v-for="(row, index) in tableData" :key="index" class="grid grid-cols-6 text-gray-500 ">
-		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.key }}</div>
-		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.createdAt }}</div>
-		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.validTill }}</div>
-		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.lastAccessedBy }}</div>
-		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.lastAccessedAt }}</div> <!-- New column -->
+	
+		<div v-if="secretStore.Secrets" v-for="(row, index) in secretStore.Secrets" :key="index" class="grid grid-cols-5 text-gray-500 ">
+		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.name }}</div>
+		  <div class="col flex px-0 justify-start items-center  py-3">{{ formatDate(row.createdAt) }}</div>
+		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.encryptedData }}</div>
+		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.type }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">
 			<RouterLink :to="currentRoute+'/keys/'+row.id" class="bg-primary w-full px-10 py-2 rounded-md text-center text-white">View</RouterLink>
 		  </div>
@@ -51,6 +49,9 @@
   import { useRoute } from 'vue-router';
 import createKey from '../modal/createKey.vue';
   import { ref } from 'vue';
+import { useOrganizationStore } from '@/store/useOrganizationStore';
+import { onMounted } from 'vue';
+import { useSecretStore } from '@/store/useSecretStore';
   interface KeyInfo {
 	id:number;
 	key: string;
@@ -59,8 +60,19 @@ import createKey from '../modal/createKey.vue';
 	lastAccessedBy: string;
 	lastAccessedAt: string; // Add the new property
   }
+  function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
 
+  return `${year}-${month}-${day}`;
+}
+
+  const orgStore = useOrganizationStore();
+  const secretStore = useSecretStore();
   const currentRoute = useRoute().path;
+  
   console.log(currentRoute);
 
   const isOpen = ref(false);
@@ -71,16 +83,6 @@ import createKey from '../modal/createKey.vue';
   function openModal() {
 	isOpen.value = true
   }
-
-  
-  const tableData = ref<KeyInfo[]>([
-    { id: 1, key: 'Key 1', createdAt: '2022-01-01', validTill: '2023-01-01', lastAccessedBy: 'User 1', lastAccessedAt: '2023-01-01 12:00:00' },
-    { id: 2, key: 'Key 2', createdAt: '2022-02-01', validTill: '2023-02-01', lastAccessedBy: 'User 2', lastAccessedAt: '2023-02-01 12:00:00' },
-    { id: 3, key: 'Key 3', createdAt: '2022-03-01', validTill: '2023-03-01', lastAccessedBy: 'User 3', lastAccessedAt: '2023-03-01 12:00:00' },
-    { id: 4, key: 'Key 4', createdAt: '2022-04-01', validTill: '2023-04-01', lastAccessedBy: 'User 4', lastAccessedAt: '2023-04-01 12:00:00' },
-    { id: 5, key: 'Key 5', createdAt: '2022-05-01', validTill: '2023-05-01', lastAccessedBy: 'User 5', lastAccessedAt: '2023-05-01 12:00:00' }
-]
-);
   </script>
   
   <style scoped>

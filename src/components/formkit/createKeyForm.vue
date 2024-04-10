@@ -106,13 +106,22 @@
   //@ts-ignore
   import customSubmit from '@/components/formkit/customSubmit.vue';
   import { createInput } from '@formkit/vue';
+import { encodeBase64, stringToBase64 } from '@/security/conversions';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useSecretStore } from '@/store/useSecretStore';
+import { useOrganizationStore } from '@/store/useOrganizationStore';
   
   const submitButton = createInput(customSubmit, {
 	props: ['text', 'loading']
   });
   
   const loading: Ref<boolean> = ref(false);
-  
+const emits = defineEmits(['close']);
+
+// Function to close the modal
+function closeModal() {
+  emits('close');
+}
   const formData = ref({
 	name: '',
 	description: '',
@@ -121,9 +130,30 @@
 	expiresAt: null,
   });
   
-  const handleSubmit = () => {
-	console.log('Form submitted:', formData.value);
+  const authStore=useAuthStore();
+  const orgStore = useOrganizationStore();
+  const secretStore = useSecretStore();
+  const handleSubmit = async(val:any) => {
+	
+	const creator = authStore.getUserData.value.email;
+	   const encryptedVal = stringToBase64(val.value);
+		const keyData = {
+		"encryptedData":encryptedVal,
+		"user": null,
+		"name": val.name,
+		"description": val.description,
+		"tags": val.tags.split(','),
+		"creatorEmail": creator,
+		"type": "api",
+		"organizationId":orgStore.currentOrganization.id
+		}
+	const res = await secretStore.createSecret(keyData);
+	if(res){
+		closeModal();
+	}
+
 	// Handle form submission here, potentially using formData.value
+	console.log(val);
   };
   </script>
   
