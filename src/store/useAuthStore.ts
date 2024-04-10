@@ -113,7 +113,7 @@ export const useAuthStore = defineStore("AuthStore", () => {
           
            const authService = new AuthServiceWrapper();
            const response = await authService.createUser(payload);
-           console.log(response)
+           userData.value = response;
            if(await response){
             return true;
            }else{

@@ -2,10 +2,9 @@
 import { ref , Ref } from 'vue';
 import customSubmit from '@/components/formkit/customSubmit.vue';
 import { createInput } from '@formkit/vue';
-
-const submitButton = createInput(customSubmit, {
-    props: ['text', 'loading']
-})
+import axios from 'axios';
+//@ts-ignore
+import { InviteService } from '@/services/InviteServiceWrapper';
 const props = defineProps({
   organization: {
     type: String,
@@ -13,10 +12,23 @@ const props = defineProps({
   },
 });
 
+const submitButton = createInput(customSubmit, {
+    props: ['text', 'loading']
+})
+
 const loading: Ref<boolean> = ref(false)
 
-const handleSubmit = (val:any) => {
-  console.log('Form submitted:',val);
+
+
+const handleSubmit = async(val:any) => {
+  const payload = {
+    toUserEmail:val.toUserEmail,
+    expiresAt:val.expiryDate,
+    organizationId:val.organizationId || props.organization
+  }
+
+  const inviteService = InviteService.createInvite(payload);
+  console.log(inviteService);
   // Handle form submission here, potentially using data.value
 };
 </script>
@@ -59,7 +71,7 @@ const handleSubmit = (val:any) => {
   label-class=""
   inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
   label="Which country is the smallest?"
-  name="small_country"
+  name="organizationId"
   :options="[
     'Monaco',
     'Vatican City',
@@ -71,6 +83,18 @@ const handleSubmit = (val:any) => {
   <p class="text-md text-gray-200 mb-2">Organization <span class="text-primary">*</span></p>
 </template>
 </FormKit>
+
+<FormKit
+  type="date"
+  name="expiryDate"
+  outer-class="w-full"
+  input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
+  label-class=""
+  inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
+  help="Enter your birth day"
+  validation-visibility="live"
+/>
+
 <div class="w-full flex text-white justify-center items-center">
   <FormKit
     :loading="loading"

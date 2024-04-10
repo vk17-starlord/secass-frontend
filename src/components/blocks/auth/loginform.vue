@@ -119,10 +119,17 @@ import { useRouter } from 'vue-router';
       passHash:val.password,
       email:val.email,
     }
-    const res = await store.signIn(payload);
+try {
+  const res = await store.signIn(payload);
     if(res){
       router.push('/app/dashboard');
+    }else{
+      loading.value=false
     }
+} catch (error) {
+  loading.value=false;
+  alert("Error Occurred");
+}
   }
   </script>
   

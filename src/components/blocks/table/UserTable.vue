@@ -1,5 +1,5 @@
 <template>
-	<inviteUser @close="closeModal" :isOpen="isOpen"/>
+	<inviteUser :organization="currentOrgID" @close="closeModal" :isOpen="isOpen"/>
 	<div class="w-full flex items-center justify-between">
 		<h2 class="text-xl font-bold " >Organization Users</h2>
 		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Invite User</button>
@@ -55,7 +55,7 @@
 import inviteUser from '@/components/blocks/modal/inviteUser.vue';
 import { ref } from 'vue'
 
-  
+const currentOrgID = '6615b53302cb279db550b7d8';
 
 
   const users = ref([

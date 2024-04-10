@@ -36,7 +36,7 @@
 				   <i class='bx mr-5 bxs-user-plus'></i> Invite Users
 				</DialogTitle>
 
-				<inviteForm/>
+				<inviteForm :organization="organization"/>
   
 			  </DialogPanel>
 			</TransitionChild>
@@ -58,9 +58,15 @@
   } from '@headlessui/vue'
 import InviteForm from '@/components/formkit/inviteForm.vue';
 
+
+
 // Define props
-const { isOpen } = defineProps({
+const { isOpen ,organization } = defineProps({
   isOpen: Boolean,
+  organization: {
+    type: String,
+    default: null,
+  },
 });
 
 const emits = defineEmits(['close']);
