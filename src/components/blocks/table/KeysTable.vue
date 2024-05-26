@@ -31,7 +31,7 @@
 	  </div>
 	  <div class="table-body">
 	
-		<div v-if="secretStore.Secrets" v-for="(row, index) in secretStore.Secrets" :key="index" class="grid grid-cols-5 text-gray-500 ">
+		<div v-if="secrets" v-for="(row, index) in secrets" :key="index" class="grid grid-cols-5 text-gray-500 ">
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ row.name }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ formatDate(row.createdAt) }}</div>
 		  <div class="col flex px-0 justify-start items-center  py-3">{{ truncateWithEllipsis(row.encryptedData,15) }}</div>
@@ -56,6 +56,7 @@
   import { useOrganizationStore } from '@/store/useOrganizationStore';
   import { onMounted } from 'vue';
   import { useSecretStore } from '@/store/useSecretStore';
+import { computed } from 'vue';
   interface KeyInfo {
 	id:number;
 	key: string;
@@ -83,6 +84,16 @@
   const orgStore = useOrganizationStore();
   const secretStore = useSecretStore();
   const currentRoute = useRoute().path;
+  const currentOrgID = useRoute().params.id;
+
+  const secrets = computed(()=>{
+	return secretStore.Secrets;
+  })
+
+  
+  onMounted(async()=>{
+	await secretStore.getSecrets(currentOrgID);
+  })
 
   const searchText = ref('');
   function changeSearchText(event: any) {

@@ -6,6 +6,7 @@ import { decodeBase64, encodeBase64, exportPrivateKeyAsBase64, exportPublicKeyAs
 import { encryptAESGCM } from '@/security/encryption';
 import { generateRSAKeyPair, generateSymmetricKey ,encryptSymmetricKeyWithPublicKey} from '@/security/keyDerivation';
 import { useStorage } from '@vueuse/core';
+import { useSecretStore } from './useSecretStore';
 
 export const useOrganizationStore = defineStore('OrganizationStore', () => {
   // Use ref for organizations array to maintain reactivity
@@ -24,15 +25,20 @@ export const useOrganizationStore = defineStore('OrganizationStore', () => {
 	})[0]
   }
 
+  const secretStore = useSecretStore();
   const currentOrgRole = ref('viewer');
   
-  const setOrganization = (org: any)=>{
+  const setOrganization = async(org: any)=>{
+	currentOrganization.value = null;
+	secretStore.Secrets = [];
 	if(authStore.getUserData.value.email == org.adminEmail){
 		currentOrgRole.value = 'admin';
 	}else{
 		currentOrgRole.value = 'viewer';
 	}
 	currentOrganization.value = org;
+
+	await secretStore.getSecrets(org.id);
   }
 
   const removeOrganization = ()=>{

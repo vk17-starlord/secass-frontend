@@ -40,14 +40,13 @@ import { useSecretStore } from '@/store/useSecretStore';
 
 const router = useRoute();
 const store = useOrganizationStore();
-const secretStore = useSecretStore();
+
 onMounted(async()=>{
 	const id = router.params.id;
 	console.log(id);
 	const org  = store.getOrganizationByID(id);
 	console.log(org)
-	const res = store.setOrganization(org)
-	await secretStore.getSecrets();
+	store.setOrganization(org)
 })
 </script>
 

@@ -5,30 +5,23 @@
             <p>
                 Key Lifetime
             </p>
-            <div 
-                class="w-[36px] max-h-[36px] rounded-full bg-[#0E0E14] flex justify-center items-center cursor-pointer"
-                @click="handleEditIconClick"
-            >
-                <i v-if="!isEditing" class='bx bxs-pencil'></i>
-                <i v-else class='bx bxs-save'></i>
-            </div>
         </div>
         <div class="w-[68%] flex flex-col items-start justify-between pl-2 pt-3">
             <div class="w-[100%] flex justify-between items-center">
                 <p class="text-[14px] font-medium">
                     Created At
                 </p>
-                <p class="text-[#5D5FEF]">
-                    {{ props.createdAt }}
+                <p class="text-[#5D5FEF] text-right">
+                    {{ formatDate(props.createdAt) }}
                 </p>
             </div>
             <div class="w-[100%] flex justify-between items-center">
-                <p class="text-[14px] font-medium">
+                <span class="text-[14px] font-medium">
                     Valid Till
-                </p>
-                <p class="text-[#5D5FEF]">
-                    {{ props.validTill }}
-                </p>
+                </span>
+                <span class="text-[#5D5FEF] t">
+                    {{ formatDate(props.validTill) }}
+                </span>
             </div>
         </div>
     </div>
@@ -37,6 +30,20 @@
 <script setup lang="ts">
     import { ref } from 'vue'
 
+    function formatDate(isoString: string): string {
+    // Convert the ISO string to a Date object
+    const date = new Date(isoString);
+
+    // Define options for the date format
+    const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    };
+
+    // Format the date using Intl.DateTimeFormat
+    return new Intl.DateTimeFormat('en-GB', options).format(date);
+    }
     const props = defineProps<{
         createdAt: string,
         validTill: string

@@ -61,7 +61,8 @@
   
   <script setup lang="ts">
 
-    import {
+    import { useOrganizationStore } from '@/store/useOrganizationStore';
+import {
         TransitionRoot,
         TransitionChild,
         Dialog,
@@ -80,6 +81,12 @@
         emits('close');
     }
 
+    const orgStore = useOrganizationStore();
+    const currentOrganization = orgStore.currentOrganization;
+
+    const orgusers = await orgStore.getOrganizationUsers(currentOrganization?.id);
+    console.log(orgusers);
+    
     const users:{
         id: number,
         name: string,

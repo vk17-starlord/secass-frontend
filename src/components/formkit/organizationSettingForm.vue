@@ -4,6 +4,7 @@ import { ref , Ref } from 'vue';
 import customSubmit from '@/components/formkit/customSubmit.vue';
 import { createInput } from '@formkit/vue';
 import { useRoute } from 'vue-router';
+import { useOrganizationStore } from '@/store/useOrganizationStore';
 
 const submitButton = createInput(customSubmit, {
     props: ['text', 'loading']
@@ -12,11 +13,9 @@ const submitButton = createInput(customSubmit, {
 const loading: Ref<boolean> = ref(false)
 
 const router = useRoute()
-
-const organizations = ref(JSON.parse(localStorage.getItem('organizations') || '[]'))
-const currentOrg = organizations.value.find((org: any) => org.id === router.params.id)
-
-console.log(organizations.value, currentOrg)
+const store = useOrganizationStore();
+const currentOrg = store.getOrganizationByID(router.params.id) 
+console.log(currentOrg,'org');
 const formData = ref({
   fromUserEmail: '',
   toUserEmail: '',
@@ -63,24 +62,6 @@ const handleSubmit = () => {
         </template>
       </FormKit>
 
-      <!-- Description Field -->
-      <FormKit
-        type="textarea"
-        name="description"
-        outer-class="w-full"
-        input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
-        label-class=""
-        inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
-        validation="required"
-        message-class="text-red-500 text-sm mt-2"
-        :value="currentOrg?.description || ''"
-        :disabled="true"
-      >
-        <template #label>
-          <p class="text-md text-gray-200 my-4">Description <span class="text-primary">*</span></p>
-        </template>
-      </FormKit>
-
       <!-- Organization Access Key Field -->
       <FormKit
         type="text"
@@ -114,19 +95,6 @@ const handleSubmit = () => {
         </template>
       </FormKit>
 
-      <!-- Submit Button -->
-      <!-- <div class="w-full flex mt-5 col-span-2 text-white justify-center items-center">
-        <FormKit
-          :loading="loading"
-          :type="submitButton"
-          input-class="$reset flex w-full justify-center items-center text-center py-2.5  bg-primary w-full"
-          inner-class="$reset w-full  rounded-md  overflow-hidden  w-full border-none focus:outline-none !important shadow-none"
-          outer-class="w-full"
-		  wrapper-class="w-full !important"
-          text="Save Settings"
-        >
-        </FormKit>
-      </div> -->
     </FormKit>
   </div>
 </template>

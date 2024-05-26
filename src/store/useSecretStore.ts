@@ -15,9 +15,9 @@ export const useSecretStore = defineStore('SecretStore', () => {
   const secretStorage: any = useStorage('secrets', []);
 
   // Methods to manage Secrets
-  const getSecrets = async () => {
+  const getSecrets = async (id:any) => {
     try {
-      const organizationId = orgStore.currentOrganization.id;
+      const organizationId =id;
       const userId = authStore.getUserData.value.id;
       const res = await SecretService.fetchSecrets(organizationId, userId);
       if(res.data){
@@ -29,6 +29,18 @@ export const useSecretStore = defineStore('SecretStore', () => {
       throw error;
     }
   };
+
+  const getSecretbyID = (id:any)=>{
+    try {
+      return Secrets.value.filter((secret: { id: any; }) => {
+        return secret.id == id;
+      })[0]
+    } catch (error) {
+      console.error('Error fetching secrets:', error);
+      return null;
+    }
+  }
+
 
   const createSecret = async (payload: any) => {
     try {
@@ -68,5 +80,5 @@ export const useSecretStore = defineStore('SecretStore', () => {
     });
   };
 
-  return { createSecret, getSecrets, deleteSecret, Secrets, searchSecrets };
+  return { createSecret,getSecretbyID, getSecrets, deleteSecret, Secrets, searchSecrets };
 });
