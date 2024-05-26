@@ -75,8 +75,8 @@ import { computed } from 'vue';
   }
 
   function truncateWithEllipsis(str:string, maxLength:number):string {
-    if (str.length > maxLength) {
-        return str.slice(0, maxLength - 3) + "...";
+    if (str && str?.length > maxLength ) {
+        return str?.slice(0, maxLength - 3) + "...";
     }
     return str;
   }
@@ -90,7 +90,6 @@ import { computed } from 'vue';
 	return secretStore.Secrets;
   })
 
-  
   onMounted(async()=>{
 	await secretStore.getSecrets(currentOrgID);
   })

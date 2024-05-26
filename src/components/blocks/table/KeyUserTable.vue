@@ -37,21 +37,51 @@
 	import addUser from '../modal/addUser.vue';
 	import { useOrganizationStore } from '@/store/useOrganizationStore';
 	import { useRoute } from 'vue-router';
+import { useSecretStore } from '@/store/useSecretStore';
+
+	const keyID = useRoute().params.keyId;
+	const orgId = useRoute().params.id;
+	const store = useSecretStore();
 
     const tableData = ref([
-        { name:"Github PAT", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Digital Ocean", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Database Password", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Redis Password", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"AWS Access Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"GCP Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Github PAT", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Digital Ocean", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Database Password", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"Redis Password", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"AWS Access Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
-        { name:"GCP Key", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" }
+        { name:"Github PAT", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" }
     ])
+
+	function formatDate(isoString: string): string {
+	// Convert the ISO string to a Date object
+	const date = new Date(isoString);
+
+	// Check if the date is valid
+	if (isNaN(date.getTime())) {
+		return "Invalid Date";
+	}
+
+	// Define options for the date format
+	const options: Intl.DateTimeFormatOptions = {
+		day: '2-digit',
+		month: 'long',
+		year: 'numeric'
+	};
+
+	// Format the date using Intl.DateTimeFormat
+	return new Intl.DateTimeFormat('en-GB', options).format(date);
+	}
+
+	onMounted(async()=>{
+		const data = await store.getSecretUsers(keyID,orgId);
+		console.log(data);
+		if(data){
+			tableData.value = data.map((ele:any)=>{
+				console.log(ele);
+				return {
+					 name: ele.name == "" ? ele.creatorEmail.substr(0,16) : ele.name,
+					 lastAccessed:formatDate(ele.createdAt),
+					 createdOn: formatDate(ele.updatedAt)
+				}
+			});
+			console.log(data)
+		}
+	})
 
 	const isAddUserOpen = ref(false);
 

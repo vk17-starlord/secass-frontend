@@ -1,11 +1,12 @@
 <template>
-    <div class="bg-cardbg p-3 max-w-[460px] h-[186px] rounded-lg mt-3 mb-3">
+    <div class="bg-cardbg p-3 max-w-[460px] h-[186px] rounded-lg my-2 mb-3">
         <div class="flex justify-between">
             <img src="../../../assets/key.jpeg" alt="Key" class="w-[52px] h-[52px] rounded-full">
             <p>
                 About {{ props.keyTitle }}
             </p>
             <div 
+                v-if="canEdit"
                 class="w-[36px] max-h-[36px] rounded-full bg-[#0E0E14] flex justify-center items-center cursor-pointer"
                 @click="handleEditIconClick"
             >
@@ -66,7 +67,9 @@
         keyTitle: string,
         keyName: string,
         keyValue: string
+        canEdit:boolean,
     }>()
+    console.log(props.canEdit);
 
     const isEditing = ref(false)
     const valueInputType = ref('password')

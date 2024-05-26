@@ -136,10 +136,11 @@ const handleSubmit = async(val:any) => {
   validation="required"
   message-class="text-red-500 text-sm mt-2"
   label="Expiry Date"
-/>
-  <template>
-    <p class="text-md text-white-200 mb-2">Expiry Date <span class="text-primary">*</span></p>
-  </template>
+>
+<template  #label>
+  <p class="text-md text-white mb-2">Expiry Date <span class="text-primary">*</span></p>
+</template>
+</FormKit>
 
 <div class="w-full flex text-white justify-center items-center">
   <FormKit

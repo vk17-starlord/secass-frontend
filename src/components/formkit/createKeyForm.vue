@@ -136,7 +136,6 @@ function closeModal() {
   const orgStore = useOrganizationStore();
   const secretStore = useSecretStore();
   const userData = authStore.getUserData;
-  console.log(userData.value.id,'data for user')
   
   const handleSubmit = async(val:any) => {
 	console.log(val);
@@ -160,11 +159,7 @@ function closeModal() {
 	const res = await secretStore.createSecret(keyData);
 	if(res){
 		closeModal();
-		await secretStore.getSecrets();
 	}
-
-	// Handle form submission here, potentially using formData.value
-	console.log(val);
   };
   </script>
   

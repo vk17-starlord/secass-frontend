@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-cardbg p-3 max-w-[460px] h-[186px] rounded-lg mb-3">
+    <div class="bg-cardbg p-3 max-w-[460px] my-2 h-[186px] rounded-lg mb-3">
         <div class="flex items-center">
             <img src="../../../assets/key.jpeg" alt="Key" class="w-[68px] h-[68px] rounded-full">
             <div class="ml-2">

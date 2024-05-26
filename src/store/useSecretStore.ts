@@ -42,6 +42,29 @@ export const useSecretStore = defineStore('SecretStore', () => {
   }
 
 
+  const getAdminByKeyID = (id:any)=>{
+    try {
+      return Secrets.value.filter((secret: { id: any; }) => {
+        return secret.id == id;
+      })[0]?.creatorEmail
+    } catch (error) {
+      console.error('Error fetching secrets:', error);
+      return null;
+    }
+  }
+
+
+  const getSecretUsers = async(secID:any,orgId:any)=>{
+    try {
+      const res = await SecretService.getUsersforSecret(secID,orgId);
+      return res.data;
+    } catch (error) {
+      console.error('Error fetching secrets:', error);
+      throw error;
+    }
+  }
+
+
   const createSecret = async (payload: any) => {
     try {
       const res = await SecretService.createSecret(payload);
@@ -70,6 +93,20 @@ export const useSecretStore = defineStore('SecretStore', () => {
     }
   };
 
+  const shareSecret = async(payload:any,id:any)=>{
+    try {
+      const res = await SecretService.shareSecret(payload,id);
+      if (res) {
+        console.log('Secret created successfully:', res , secretStorage.value );
+        secretStorage.value.push(res);
+      }
+      return res;
+    } catch (error) {
+      console.error('Error creating secret:', error);
+      throw error;
+    }
+  }
+
   const searchSecrets = async (searchTerm: string) => {
     if (!searchTerm) {
       Secrets.value = secretStorage.value;
@@ -80,5 +117,5 @@ export const useSecretStore = defineStore('SecretStore', () => {
     });
   };
 
-  return { createSecret,getSecretbyID, getSecrets, deleteSecret, Secrets, searchSecrets };
+  return { shareSecret, createSecret,getSecretbyID,getAdminByKeyID, getSecretUsers , getSecrets, deleteSecret, Secrets, searchSecrets };
 });
