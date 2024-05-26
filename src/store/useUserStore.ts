@@ -9,6 +9,7 @@ export const useUserStore = defineStore('UserStore', () => {
   const Invites:Ref<any> = ref([]);
 
   const authStore = useAuthStore();
+  
   const orgStore = useOrganizationStore();
   // Methods to manage Invites
   const getInvites = async()=>{
@@ -21,6 +22,7 @@ export const useUserStore = defineStore('UserStore', () => {
     Invites.value=res.data;
     console.log(Invites.value)
   }
+
   const createInvite = async( payload: any) => {
 	try {
 		const res = InviteService.createInvite(payload);

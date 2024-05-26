@@ -38,7 +38,6 @@ export const useAuthStore = defineStore("AuthStore", () => {
       payload.email + payload.passHash,
       payload.email
     );
-
     const hashedRootkey = await hashText(rootKey.value, payload.email);
     currentPayload.value = {
       name:payload.name,

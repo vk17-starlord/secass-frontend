@@ -115,6 +115,8 @@ import { useOrganizationStore } from '@/store/useOrganizationStore';
 	props: ['text', 'loading']
   });
   
+
+ 
   const loading: Ref<boolean> = ref(false);
 const emits = defineEmits(['close']);
 
@@ -133,13 +135,21 @@ function closeModal() {
   const authStore=useAuthStore();
   const orgStore = useOrganizationStore();
   const secretStore = useSecretStore();
+  const userData = authStore.getUserData;
+  console.log(userData.value.id,'data for user')
+  
   const handleSubmit = async(val:any) => {
-	
+	console.log(val);
 	const creator = authStore.getUserData.value.email;
 	   const encryptedVal = stringToBase64(val.value);
 		const keyData = {
 		"encryptedData":encryptedVal,
-		"user": null,
+		"user": {
+			"id":userData.value.id,
+    		"role": "admin"
+		},
+		"referenceKey": "",
+		"expiresAt":new Date(val.expiresAt),
 		"name": val.name,
 		"description": val.description,
 		"tags": val.tags.split(','),

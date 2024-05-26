@@ -11,15 +11,19 @@ export const useSecretStore = defineStore('SecretStore', () => {
   const orgStore = useOrganizationStore();
   const authStore = useAuthStore();
 
-  let secretStorage:any = useStorage('secrets', [], localStorage);
+  // Use sessionStorage instead of localStorage
+  const secretStorage: any = useStorage('secrets', []);
+
   // Methods to manage Secrets
   const getSecrets = async () => {
     try {
-	  const organizationId = orgStore.currentOrganization.id;
-	  const userId = authStore.getUserData.value.id;
-      const res = await SecretService.fetchSecrets(organizationId,userId);
-      Secrets.value = res.data;
-      secretStorage.value = res.data;
+      const organizationId = orgStore.currentOrganization.id;
+      const userId = authStore.getUserData.value.id;
+      const res = await SecretService.fetchSecrets(organizationId, userId);
+      if(res.data){
+        Secrets.value = res.data;
+        secretStorage.value = res.data;
+      }
     } catch (error) {
       console.error('Error fetching secrets:', error);
       throw error;
@@ -29,8 +33,10 @@ export const useSecretStore = defineStore('SecretStore', () => {
   const createSecret = async (payload: any) => {
     try {
       const res = await SecretService.createSecret(payload);
-      console.log('Secret created successfully:', res);
-      secretStorage.value.push(res);
+      if (res) {
+        console.log('Secret created successfully:', res , secretStorage.value );
+        secretStorage.value.push(res);
+      }
       return res;
     } catch (error) {
       console.error('Error creating secret:', error);
@@ -42,6 +48,9 @@ export const useSecretStore = defineStore('SecretStore', () => {
     try {
       const res = await SecretService.deleteSecret(id);
       console.log('Secret deleted successfully:', res);
+      // Update the Secrets and secretStorage to reflect the deletion
+      Secrets.value = Secrets.value.filter((secret: any) => secret.id !== id);
+      secretStorage.value = Secrets.value;
       return true;
     } catch (error) {
       console.error('Error deleting secret:', error);
@@ -50,14 +59,14 @@ export const useSecretStore = defineStore('SecretStore', () => {
   };
 
   const searchSecrets = async (searchTerm: string) => {
-    if(!searchTerm) {
+    if (!searchTerm) {
       Secrets.value = secretStorage.value;
       return;
     }
     Secrets.value = secretStorage.value.filter((secret: any) => {
       return secret.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
-  }
+  };
 
   return { createSecret, getSecrets, deleteSecret, Secrets, searchSecrets };
 });
