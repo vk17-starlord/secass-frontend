@@ -9,7 +9,7 @@
 		<button class="bg-primary px-20  rounded-md text-white">Search</button>
 	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
-	  <div class="table-header w-full grid grid-cols-7 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
+		<div class="table-header w-full grid grid-cols-7 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col flex justify-start items-center ">
 		  <h3 class="text-white font-semibold text-lg">Name</h3>
 		</div>
@@ -17,16 +17,10 @@
 		  <h3 class="text-white font-semibold text-lg">Email</h3>
 		</div>
 		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Invitation</h3>
-		</div>
-		<div class="col flex justify-start items-center">
 		  <h3 class="text-white font-semibold text-lg">Status</h3>
 		</div>
 		<div class="col flex justify-start items-center">
 		  <h3 class="text-white font-semibold text-lg">Org. Key</h3>
-		</div>
-		<div class="col justify-center flex items-center">
-		  <h3 class="text-white font-semibold text-lg">Action</h3>
 		</div>
 		<div class="col justify-center flex items-center">
 			<h3 class="text-white font-semibold text-lg">Delete</h3>
@@ -36,12 +30,8 @@
 		<div v-for="(user, index) in users" :key="index" class="grid grid-cols-7 gap-2.5 text-gray-500 ">
 		  <div class="col flex px-0 justify-start items-center py-3">{{ user.name }}</div>
 		  <div class="col flex px-0 justify-start items-center py-3">{{ user.email }}</div>
-		  <div class="col flex px-0 justify-start items-center py-3">{{ user.role }}</div>
 		  <div :data-status="user.status" class="col flex px-0 justify-start items-center py-3"> <i class='bx mr-4 bx-bolt-circle'></i> {{ user.status }}</div>
-		  <div   class="col flex px-0 justify-start items-center py-3"><button  :data-key-status="user.key" class="w-full py-2 rounded-md text-white">{{ user.key }}</button></div>
-		  <div class="col flex px-0 justify-start items-center py-3">
-			<button class="bg-primary w-full px-10 py-2 rounded-md text-white">View</button>
-		  </div>
+		  <div class="col flex px-0 justify-start items-center py-3"><button  :data-key-status="user.key" class="w-full py-2 rounded-md text-white">{{ user.key }}</button></div>
 		  <div class="col flex px-0 justify-start items-center py-3">
 			<button class="bg-[#921616] w-full px-10 py-2 rounded-md text-white">Remove</button>
 		  </div>
@@ -52,27 +42,42 @@
   
   <script setup lang="ts">
 //@ts-ignore
-import inviteUser from '@/components/blocks/modal/inviteUser.vue';
-import { ref } from 'vue'
+	import inviteUser from '@/components/blocks/modal/inviteUser.vue';
+	import { useOrganizationStore } from '@/store/useOrganizationStore';
+	import { onMounted, ref } from 'vue'
+	import { useRoute } from 'vue-router';
 
-const currentOrgID = '6615b53302cb279db550b7d8';
 
+	// const users = ref([
+	// 	{ name: 'John Doe', email: 'john@example.com', role: 'Accepted', status: 'Active', key: 'Activated' },
+	// 	{ name: 'Jane Doe', email: 'jane@example.com', role: 'Pending', status: 'Active', key:  'Deactivated' },
+	// 	{ name: 'Alice Smith', email: 'alice@example.com', role: 'Rejected', status: 'Inactive', key: 'Generate' },
+  	// ]);
 
-  const users = ref([
-	{ name: 'John Doe', email: 'john@example.com', role: 'Accepted', status: 'Active', key: 'Activated' },
-	{ name: 'Jane Doe', email: 'jane@example.com', role: 'Pending', status: 'Active', key:  'Deactivated' },
-	{ name: 'Alice Smith', email: 'alice@example.com', role: 'Rejected', status: 'Inactive', key: 'Generate' },
-	// Add more users as needed
-  ]);
+	const users:any = ref();
 
-  const isOpen = ref(false);
+	const orgStore = useOrganizationStore();
+	const route = useRoute();
 
-  function closeModal() {
+	const currentOrgID: any = route.params.id;
+
+	onMounted(async() => {
+		let  userData = await orgStore.getOrganizationUsers(currentOrgID)
+		console.log(userData)
+		// userData = userData.map((user:any) => {
+		// 	user.key = user.status === 'Active' ? 'Activated' : user.status === 'Inactive' ? 'Deactivated' : 'Generate';
+		// })
+		users.value = userData
+	})
+
+	const isOpen = ref(false);
+
+	function closeModal() {
 	isOpen.value = false
-  }
-  function openModal() {
+	}
+	function openModal() {
 	isOpen.value = true
-  }
+	}
 
   </script>
   

@@ -48,7 +48,6 @@ onMounted(async()=>{
 	console.log(org)
 	const res = store.setOrganization(org)
 	await secretStore.getSecrets();
-	
 })
 </script>
 

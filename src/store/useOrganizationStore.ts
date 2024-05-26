@@ -75,5 +75,28 @@ export const useOrganizationStore = defineStore('OrganizationStore', () => {
 		alert('Error occurred while creating organization')
 	}
   };
-  return { createOrganization , setOrganization ,currentOrgRole, currentOrganization ,removeOrganization, getOrganizations , organizations , getOrganizationByID}
+
+  const getOrganizationUsers = async(organizationId: any)=>{
+	try {
+		const res = await OrganizationService.fetchOrganizationUsers(organizationId);
+		console.log(res.data);
+		res.data.forEach((user:any)=>{
+			const org = user.organizations.find((org: { id: any; }) => org.id == organizationId);
+			if(org.pvtKey){
+				user.status = 'Active';
+				user.key = 'Activated';
+			}
+			else{
+				user.status = 'Inactive';
+				user.key = 'Generate';
+			}
+		})
+		console.log(res.data);
+		return res.data;
+	} catch (error) {
+		console.log(error);
+		alert('Error occurred in getting details of org')
+	}
+  }
+  return { createOrganization , setOrganization ,currentOrgRole, currentOrganization ,removeOrganization, getOrganizations , organizations , getOrganizationByID, getOrganizationUsers}
 });

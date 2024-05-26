@@ -3,6 +3,7 @@ import { ref , Ref } from 'vue';
 //@ts-ignore
 import customSubmit from '@/components/formkit/customSubmit.vue';
 import { createInput } from '@formkit/vue';
+import { useRoute } from 'vue-router';
 
 const submitButton = createInput(customSubmit, {
     props: ['text', 'loading']
@@ -10,6 +11,12 @@ const submitButton = createInput(customSubmit, {
 
 const loading: Ref<boolean> = ref(false)
 
+const router = useRoute()
+
+const organizations = ref(JSON.parse(localStorage.getItem('organizations') || '[]'))
+const currentOrg = organizations.value.find((org: any) => org.id === router.params.id)
+
+console.log(organizations.value, currentOrg)
 const formData = ref({
   fromUserEmail: '',
   toUserEmail: '',
@@ -48,6 +55,7 @@ const handleSubmit = () => {
         inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
         validation="required"
         message-class="text-red-500 text-sm mt-2"
+        :value="currentOrg?.name || ''"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">Organization Name <span class="text-primary">*</span></p>
@@ -64,6 +72,7 @@ const handleSubmit = () => {
         inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
         validation="required"
         message-class="text-red-500 text-sm mt-2"
+        :value="currentOrg?.description || ''"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">Description <span class="text-primary">*</span></p>
@@ -80,6 +89,8 @@ const handleSubmit = () => {
         inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
         validation="required"
         message-class="text-red-500 text-sm mt-2"
+        :disabled="true"
+        :value="currentOrg?.symKey.encryptedData || ''"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">Organization Access Key <span class="text-primary">*</span></p>
@@ -91,7 +102,7 @@ const handleSubmit = () => {
 	  type="checkbox"
       label="Terms and Conditions"
       name="terms"
-      :value="true"
+      :value="currentOrg?.sdkAccess || true"
 	  outer-class="flex justify-start items-start text-white"
 	  wrapper-class="flex text-white"
       >

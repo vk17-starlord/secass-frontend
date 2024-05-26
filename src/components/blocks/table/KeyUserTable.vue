@@ -33,8 +33,11 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
 	import addUser from '../modal/addUser.vue';
+	import { useOrganizationStore } from '@/store/useOrganizationStore';
+	import { useRoute } from 'vue-router';
+
     const tableData = ref([
         { name:"Github PAT", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },
         { name:"Digital Ocean", lastAccessed: "10:10 24 April 2024", createdOn: "10:10 24 April 2024" },

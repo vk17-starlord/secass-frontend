@@ -150,6 +150,7 @@ function closeModal() {
 	const res = await secretStore.createSecret(keyData);
 	if(res){
 		closeModal();
+		await secretStore.getSecrets();
 	}
 
 	// Handle form submission here, potentially using formData.value
