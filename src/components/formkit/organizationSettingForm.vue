@@ -56,6 +56,7 @@ const handleSubmit = () => {
         validation="required"
         message-class="text-red-500 text-sm mt-2"
         :value="currentOrg?.name || ''"
+        :disabled="true"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">Organization Name <span class="text-primary">*</span></p>
@@ -73,6 +74,7 @@ const handleSubmit = () => {
         validation="required"
         message-class="text-red-500 text-sm mt-2"
         :value="currentOrg?.description || ''"
+        :disabled="true"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">Description <span class="text-primary">*</span></p>
@@ -99,12 +101,13 @@ const handleSubmit = () => {
 
       <!-- SDK Access Field -->
       <FormKit
-	  type="checkbox"
-      label="Terms and Conditions"
-      name="terms"
-      :value="currentOrg?.sdkAccess || true"
-	  outer-class="flex justify-start items-start text-white"
-	  wrapper-class="flex text-white"
+        type="checkbox"
+        label="Terms and Conditions"
+        name="terms"
+        :value="currentOrg?.sdkAccess || true"
+        outer-class="flex justify-start items-start text-white"
+        wrapper-class="flex text-white"
+        :disabled="true"
       >
         <template #label>
           <p class="text-md text-gray-200 my-4">SDK Access <span class="text-primary">*</span></p>
@@ -112,7 +115,7 @@ const handleSubmit = () => {
       </FormKit>
 
       <!-- Submit Button -->
-      <div class="w-full flex mt-5 col-span-2 text-white justify-center items-center">
+      <!-- <div class="w-full flex mt-5 col-span-2 text-white justify-center items-center">
         <FormKit
           :loading="loading"
           :type="submitButton"
@@ -123,7 +126,7 @@ const handleSubmit = () => {
           text="Save Settings"
         >
         </FormKit>
-      </div>
+      </div> -->
     </FormKit>
   </div>
 </template>

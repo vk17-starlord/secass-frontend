@@ -5,12 +5,16 @@ import { OrganizationService } from '@/services/OrgServiceWrapper';
 import { decodeBase64, encodeBase64, exportPrivateKeyAsBase64, exportPublicKeyAsBase64, getPublicKeyFromBase64 } from '@/security/conversions';
 import { encryptAESGCM } from '@/security/encryption';
 import { generateRSAKeyPair, generateSymmetricKey ,encryptSymmetricKeyWithPublicKey} from '@/security/keyDerivation';
+import { useStorage } from '@vueuse/core';
 
 export const useOrganizationStore = defineStore('OrganizationStore', () => {
   // Use ref for organizations array to maintain reactivity
   const organizations:Ref<any> = ref([]);
   const currentOrganization:Ref<any> = ref(null);
   const authStore = useAuthStore();
+  const orgUsers:Ref<any> = ref([]);
+
+  const orgUserStorage = useStorage('orgUser', []);
   // Methods to manage organizations
 
   const getOrganizationByID = (id: any)=>{
@@ -91,12 +95,22 @@ export const useOrganizationStore = defineStore('OrganizationStore', () => {
 				user.key = 'Generate';
 			}
 		})
-		console.log(res.data);
+		orgUsers.value = res.data;
 		return res.data;
 	} catch (error) {
 		console.log(error);
 		alert('Error occurred in getting details of org')
 	}
   }
-  return { createOrganization , setOrganization ,currentOrgRole, currentOrganization ,removeOrganization, getOrganizations , organizations , getOrganizationByID, getOrganizationUsers}
+
+  const serachOrgUser = (name: string)=>{
+	if(name == ''){
+		orgUsers.value = orgUserStorage.value;
+		return
+	}
+	 orgUsers.value = orgUserStorage.value.filter((user:any) => {
+		return user.name.toLowerCase().includes(name.toLowerCase()) || user.email.toLowerCase().includes(name.toLowerCase());
+	})
+  }
+  return { createOrganization , setOrganization ,currentOrgRole, currentOrganization ,removeOrganization, getOrganizations , organizations , getOrganizationByID, getOrganizationUsers, serachOrgUser, orgUsers}
 });

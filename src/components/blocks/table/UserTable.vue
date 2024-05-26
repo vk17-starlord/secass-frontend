@@ -5,8 +5,7 @@
 		<button @click="openModal" class="bg-primary px-20 py-2 h-max rounded-md text-white">Invite User</button>
 	</div>
 	<div class="w-full flex justify-between space-x-5 my-10">
-		<input class="w-full bg-dark rounded-md px-5 text-white py-2.5" placeholder="Search Users" />
-		<button class="bg-primary px-20  rounded-md text-white">Search</button>
+		<input :onChange="changeSearchText" class="w-full bg-dark rounded-md px-5 text-white py-2.5" placeholder="Search Users" />
 	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
 		<div class="table-header w-full grid grid-cols-5 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
@@ -27,7 +26,7 @@
 		  </div>
 	  </div>
 	  <div class="table-body">
-		<div v-for="(user, index) in users" :key="index" class="grid grid-cols-5 gap-2.5 text-gray-500 ">
+		<div v-if="orgStore.orgUsers" v-for="(user, index) in orgStore.orgUsers" :key="index" class="grid grid-cols-5 gap-2.5 text-gray-500 ">
 		  <div class="col flex px-0 justify-start items-center py-3">{{ user.name }}</div>
 		  <div class="col flex px-0 justify-start items-center py-3">{{ user?.email.split('@')[0] }}</div>
 		  <div :data-status="user.status" class="col flex px-0 justify-start items-center py-3"> <i class='bx mr-4 bx-bolt-circle'></i> {{ user.status }}</div>
@@ -37,6 +36,9 @@
 		  <div class="col flex px-0 justify-start items-center py-3">
 			<button class="bg-[#921616] w-full px-6 py-2 rounded-md text-white">Remove</button>
 		  </div>
+		</div>
+		<div v-else>
+		  <h2 class="text-center text-white text-lg">No users found</h2>
 		</div>
 	  </div>
 	</div>
@@ -64,13 +66,15 @@
 	const currentOrgID: any = route.params.id;
 
 	onMounted(async() => {
-		let  userData = await orgStore.getOrganizationUsers(currentOrgID)
-		console.log(userData)
-		// userData = userData.map((user:any) => {
-		// 	user.key = user.status === 'Active' ? 'Activated' : user.status === 'Inactive' ? 'Deactivated' : 'Generate';
-		// })
-		users.value = userData
+		await orgStore.getOrganizationUsers(currentOrgID)
 	})
+
+	let searchText = ref('')
+
+	function changeSearchText(event: any) {
+		searchText.value = event.target.value
+		orgStore.serachOrgUser(searchText.value)
+	}
 
 	const isOpen = ref(false);
 
