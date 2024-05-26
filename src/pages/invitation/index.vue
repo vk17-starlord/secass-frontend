@@ -28,8 +28,7 @@
 				<option selected>Choose Action</option>
 				<option :value="'accept,'+row.id">Accept</option>
 				<option :value="'reject,'+row.id">Reject</option>
-	
-			  </select>
+			</select>
 		</div>
 		</div>
 	  </div>

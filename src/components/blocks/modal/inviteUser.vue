@@ -36,7 +36,7 @@
 				   <i class='bx mr-5 bxs-user-plus'></i> Invite Users
 				</DialogTitle>
 
-				<inviteForm :organization="organization"/>
+				<inviteForm :organization="organization" :closeModal="closeModal"/>
   
 			  </DialogPanel>
 			</TransitionChild>

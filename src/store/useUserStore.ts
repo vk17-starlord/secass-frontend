@@ -14,6 +14,10 @@ export const useUserStore = defineStore('UserStore', () => {
   const getInvites = async()=>{
     const currentUserEmail = authStore.getUserData.value.email;
     const res = await  InviteService.fetchInvites(currentUserEmail);
+    // sort by createdAt recent first
+    res.data.sort((a: { createdAt: string | number; }, b: { createdAt: string | number; }) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
     Invites.value=res.data;
     console.log(Invites.value)
   }

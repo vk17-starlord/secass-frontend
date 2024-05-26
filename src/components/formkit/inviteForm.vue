@@ -12,6 +12,10 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  closeModal: {
+    type: Function,
+    default: null,
+  },
 });
 
 const submitButton = createInput(customSubmit, {
@@ -62,7 +66,7 @@ const handleSubmit = async(val:any) => {
   const inviteService =await InviteService.createInvite(invitePayload);
 
   if(inviteService){
-    
+    props.closeModal()
   }
  
   
@@ -94,6 +98,7 @@ const handleSubmit = async(val:any) => {
   :delay="1000"
   validation="required|length:5|email"
   message-class="text-red-500 text-sm mt-2"
+  label="Email"
 >
   <template #label>
     <p class="text-md text-gray-200 mb-2">Email <span class="text-primary">*</span></p>
@@ -128,9 +133,13 @@ const handleSubmit = async(val:any) => {
   input-class="$reset px-4 py-2.5 text-gray-200 bg-dark w-full border-none focus:outline-none !important shadow-none"
   label-class=""
   inner-class="$reset mt-2 rounded-md  overflow-hidden bg-dark w-full border-none focus:outline-none !important shadow-none"
-  help="Enter your birth day"
-  validation-visibility="live"
+  validation="required"
+  message-class="text-red-500 text-sm mt-2"
+  label="Expiry Date"
 />
+  <template>
+    <p class="text-md text-white-200 mb-2">Expiry Date <span class="text-primary">*</span></p>
+  </template>
 
 <div class="w-full flex text-white justify-center items-center">
   <FormKit
