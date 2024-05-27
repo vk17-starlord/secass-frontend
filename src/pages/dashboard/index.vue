@@ -7,17 +7,11 @@
 		<infoCard v-for="(infoCard, index) in infoCardsData" @button-click="infoCard.onclick" :key="index" :data="infoCard" />
 	  </div>
 
-	  <div class="grid grid-cols-[9fr,3fr] gap-5 py-10">
+	  <div class="w-full gap-5 py-10">
 		
 		<div class="col w-full">
 			<h2 class="text-xl text-white font-bold mb-5">Organizations</h2>
 			<OrganizationTable/>
-		</div>
-		<div class="col w-full text-white">
-			<h2 class="text-xl font-bold mb-5">Recently Created Keys</h2>
-			<div v-for="(dummyKey, index) in dummyKeys" :key="index">
-				<keyMetaCard  :key="index" :keyInfo="dummyKey" />
-			</div>
 		</div>
 	  </div>
 	</div>

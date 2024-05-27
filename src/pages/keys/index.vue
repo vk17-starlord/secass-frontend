@@ -18,7 +18,7 @@
 			<KeyDesc  :title="currentKey.name" :organization="getCurrentOrg.name" :description="currentKey.description"/>
 			<KeyValue :canEdit="iskeyAdmin || iskeyEditor" :keyTitle="currentKey.name" :keyName="currentKey.name" :keyValue="currentKey.encryptedData"/>
 			<KeyLifetime  :createdAt="currentKey.createdAt" :validTill="currentKey.expiresAt" />
-		</div> 
+		</div>
 	</div>
 </template>
 

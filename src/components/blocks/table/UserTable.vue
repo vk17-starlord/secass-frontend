@@ -8,33 +8,24 @@
 		<input :onChange="changeSearchText" class="w-full bg-dark rounded-md px-5 text-white py-2.5" placeholder="Search Users" />
 	</div>
 	<div class="w-full bg-cardbg pb-5 text-white rounded-lg px-10">
-		<div class="table-header w-full grid grid-cols-5 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
+		<div class="table-header w-full grid grid-cols-3 border-2 border-transparent py-5 mb-5 border-b-gray-400 ">
 		<div class="col flex justify-start items-center ">
 		  <h3 class="text-white font-semibold text-lg">Name</h3>
 		</div>
 		<div class="col flex justify-start items-center">
 		  <h3 class="text-white font-semibold text-lg">Email</h3>
 		</div>
-		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Status</h3>
-		</div>
-		<div class="col flex justify-start items-center">
-		  <h3 class="text-white font-semibold text-lg">Org. Key</h3>
-		</div>
 		<div class="col justify-center flex items-center">
 			<h3 class="text-white font-semibold text-lg">Delete</h3>
 		  </div>
 	  </div>
 	  <div class="table-body">
-		<div v-if="orgStore.orgUsers" v-for="(user, index) in orgStore.orgUsers" :key="index" class="grid grid-cols-5 gap-2.5 text-gray-500 ">
+		<div v-if="orgStore.orgUsers" v-for="(user, index) in orgStore.orgUsers" :key="index" class="grid grid-cols-3 gap-2.5 text-gray-500 ">
 		  <div class="col flex px-0 justify-start items-center py-3">{{ user.name }}</div>
-		  <div class="col flex px-0 justify-start items-center py-3">{{ user?.email.split('@')[0] }}</div>
-		  <div :data-status="user.status" class="col flex px-0 justify-start items-center py-3"> <i class='bx mr-4 bx-bolt-circle'></i> {{ user.status }}</div>
+		  <div class="col flex px-0 justify-start items-center py-3">{{ user?.email }}</div>
+		
 		  <div class="col flex px-0 justify-center items-center py-3">
-			<button  :data-key-status="user.key" class="w-full py-2 rounded-md text-white">{{ user.key }}</button>
-			</div>
-		  <div class="col flex px-0 justify-start items-center py-3">
-			<button class="bg-[#921616] w-full px-6 py-2 rounded-md text-white">Remove</button>
+			<button class="bg-[#921616] px-6 py-2 rounded-md text-white">Remove</button>
 		  </div>
 		</div>
 		<div v-else>
