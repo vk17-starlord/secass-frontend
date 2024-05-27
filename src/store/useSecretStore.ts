@@ -19,7 +19,7 @@ export const useSecretStore = defineStore('SecretStore', () => {
     try {
       const organizationId =id;
       const userId = authStore.getUserData.value.id;
-      const res = await SecretService.fetchSecrets(organizationId, userId);
+      const res = await SecretService.getKeysforUser(organizationId, userId);
       if(res.data){
         Secrets.value = res.data;
         secretStorage.value = res.data;

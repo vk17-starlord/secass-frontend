@@ -16,7 +16,7 @@
 		</div>
 		<div  class="w-full grid-cols-3 grid gap-5 min-h-[70vh] " v-else>
 			<KeyDesc  :title="currentKey.name" :organization="getCurrentOrg.name" :description="currentKey.description"/>
-			<KeyValue :canEdit="iskeyAdmin" :keyTitle="currentKey.name" :keyName="currentKey.name" :keyValue="currentKey.encryptedData"/>
+			<KeyValue :canEdit="iskeyAdmin || iskeyEditor" :keyTitle="currentKey.name" :keyName="currentKey.name" :keyValue="currentKey.encryptedData"/>
 			<KeyLifetime  :createdAt="currentKey.createdAt" :validTill="currentKey.expiresAt" />
 		</div> 
 	</div>
@@ -45,9 +45,14 @@ const currentKey = keyStore.getSecretbyID(router.params.keyId);
 const authStore = useAuthStore();
 const currentUser = authStore.getUserData;
 const keyAdmin = keyStore.getAdminByKeyID(router.params.keyId);
+
+
 const iskeyAdmin = computed(()=>{
 	console.log(currentUser.value.email , keyAdmin)
-	return currentUser.value.email == keyAdmin;
+	return currentUser.value.email == keyAdmin
+})
+const iskeyEditor = computed(()=>{
+	return currentKey?.user.role=='editor';
 })
 console.log(iskeyAdmin.value ,'here');
 </script>

@@ -156,10 +156,12 @@ function closeModal() {
 		"type": "api",
 		"organizationId":orgStore.currentOrganization.id
 		}
-	const res = await secretStore.createSecret(keyData);
-	if(res){
+	await secretStore.createSecret(keyData).then(async(ele)=>{
+		await secretStore.getSecrets(orgStore.currentOrganization.id);
 		closeModal();
-	}
+	}).catch(()=>{
+		closeModal();
+	});
   };
   </script>
   

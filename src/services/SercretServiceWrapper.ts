@@ -44,6 +44,16 @@ export class SecretService {
     }
   }
 
+  static async getKeysforUser(orgid:any,userid:any){
+    try {
+      const response = await axios.get(`http://localhost:3002/api/v1/secrets/organization/${orgid}/user/${userid}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error gettings users for secret:', error);
+      throw error;
+    }
+  }
+
   static async getUsersforSecret(secretId:any,orgId:any) {
     try {
       const response = await axios.get(`http://localhost:3002/api/v1/secrets/${secretId}/organization/${orgId}/users?page=1&limit=5`);
